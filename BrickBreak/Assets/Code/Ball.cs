@@ -11,6 +11,8 @@ public class Ball : MonoBehaviour
     public float timer=0;
     private bool speedUp= false;
     public float speed;
+
+    public GameObject Player;
     public delegate void BallEvent(int eventId);
     public BallEvent ballCallBack;
 
@@ -29,19 +31,28 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
-        
-        
-        if (timer >= 10&&!speedUp)
+        if (isStart)
+        {
+            timer += Time.deltaTime;
+        }
+
+// 타이머가 10초가 지나면 속도가 50씩 증가 한다 단 최대속도는 350이다.
+// 400 넘어가면 맵 밖으로 나가는 버그가 있어서 350으로 제한 했다.
+        if (timer >= 10&&!speedUp&&speed<350)
         {
             GetspeedUp();
+        }
+
+        // 스피드가 200을 넘어가면 바의 크기가 줄어든다.
+        if (speed >= 200)
+        {
+            Player.transform.localScale = new Vector3(1,1,1);
         }
 
         if (speedUp && timer >= 10)
         {
             speedUp = false;
         }
-        
     }
 
     void GetspeedUp()
@@ -175,8 +186,12 @@ public class Ball : MonoBehaviour
         isStart = false;
     }
 
+    
+    // 공의 위치를 초기화 
+    // 막대의 크기도 초기화 해준다
     public void ResetBall(Vector3 pos)
     {
+        Player.transform.localScale = new Vector3(2,1,1);
         rb.position = pos - new Vector3(0, -0.6f, 0);
     }
 }

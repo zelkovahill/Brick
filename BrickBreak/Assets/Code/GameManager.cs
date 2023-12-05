@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
 
     void RefreshBalls()
     {
-        ballText.text = "공 개수: " + balls;
+        ballText.text = "공 개수 : " + balls;
     }
 
     void RefreshScore()
